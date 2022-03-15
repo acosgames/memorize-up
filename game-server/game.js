@@ -2,11 +2,9 @@ import cup from './acosg';
 
 let defaultGame = {
     state: {
-        cells: {
-            0: '', 1: '', 2: '', 3: '', 4: '', 5: '', 6: '', 7: '', 8: ''
-        },
-        // cells: ['', '', '', '', '', '', '', '', ''],
-        //sx: ''
+        _history: [],
+        round: 0,
+        pattern: [],
     },
     players: {},
     next: {},
@@ -24,10 +22,6 @@ class Tictactoe {
         let next = cup.next();
         if (!next || !next.id)
             return;
-        // let id = action.payload.id;
-        // if (!next.id) {
-        //     id = next.id;
-        // }
 
         this.playerLeave(next.id);
     }
@@ -38,221 +32,152 @@ class Tictactoe {
             return;
 
         let player = cup.players(action.user.id);
-        player.rank = 2;
         player.score = 0;
-
-        let playerCount = cup.playerCount();
-        if (playerCount <= 2) {
-            cup.event('join', {
-                id: action.user.id
-            });
-            // this.checkNewRound();
-        }
-        else {
-
-        }
-
-
-        // if (cup.players(action.user.id).type)
-        //     return;
-
-
     }
 
     checkNewRound() {
         //if player count reached required limit, start the game
         //let maxPlayers = cup.rules('maxPlayers') || 2;
-        let playerCount = cup.playerCount();
-        if (playerCount >= 2) {
-            this.newRound();
-        }
+        this.newRound();
     }
 
     onLeave(action) {
         this.playerLeave(action.user.id);
     }
 
-    playerLeave(id) {
-        let players = cup.players();
-        let otherPlayerId = null;
-        if (players[id]) {
-            otherPlayerId = this.selectNextPlayer(id);
-            //delete players[id];
-        }
-
-        if (otherPlayerId) {
-            let otherPlayer = players[otherPlayerId];
-            this.setWinner(otherPlayer.type, 'forfeit')
-        }
+    playerLeave(userid) {
+        this.setWinner(userid)
     }
 
     onPick(action) {
-        let state = cup.state();
-        let user = cup.players(action.user.id);
-        if (user.test2)
-            delete user.test2;
-        //get the picked cell
-        let cellid = action.payload;
-        if (typeof cellid !== 'number')
-            return false;
 
-        let cell = state.cells[cellid];
+        let maxCorrect = this.checkGameover(action)
 
-        // block picking cells with markings, and send error
-        if (cell.length > 0) {
-            cup.next({
-                id: action.user.id,
-                action: 'pick',
-                error: 'NOT_EMPTY'
-            })
-            return false;
-        }
-
-        //mark the selected cell
-        let type = user.type;
-        let id = action.user.id;
-        state.cells[cellid] = type;
-
-        cup.event('picked', {
-            cellid, id
-        });
-        // cup.prev()
-
-        if (this.checkWinner()) {
+        if (maxCorrect > 0) {
+            this.setWinner(action.user.id, maxCorrect);
             return;
         }
 
-        cup.setTimelimit(10);
-        this.selectNextPlayer(null);
+        this.newRound();
+    }
+
+
+    checkGameover(action) {
+        let input = action?.payload;
+        if (!input || !Array.isArray(input))
+            return 1;
+
+        let inputPattern = this.decodePattern(input);
+        for (var i = 0; i < inputPattern.length; i++) {
+            if (inputPattern[i] != state._history[i])
+                return i + 1;
+        }
+
+        return 0;
+    }
+
+    getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+    }
+
+    addPatterns() {
+        let state = cup.state();
+        state.pattern = [];
+
+        for (let i = 0; i < 3; i++) {
+            let nextPattern = this.getRandomInt(1, 5);
+            state._history.push(nextPattern);
+            state.pattern.push(nextPattern1);
+        }
     }
 
     newRound() {
-        let playerList = cup.playerList();
+        let state = cup.state();
+        state.round = state.round + 1;
+
+        this.addPatterns();
+
+        cup.next({ 'id': '*' });
+
+        state.pattern = this.encodePattern();
+        // cup.event('pattern', this.encodePattern());
+
+        let minTime = Math.max(state._history.length, 5) + Math.round(state._history.length * 0.8);
+        cup.setTimelimit(minTime);
+    }
+
+    decodePattern(input) {
+        let output = [];
+        for (var i = 0; i < input.length; i++) {
+            let test = input[i];
+            if (test & (0xF0000000)) {
+                output.push(test >> 28);
+            }
+            if (test & (0x0F000000)) {
+                output.push(test >> 24);
+            }
+            if (test & (0x00F00000)) {
+                output.push(test >> 20);
+            }
+            if (test & (0x000F0000)) {
+                output.push(test >> 16);
+            }
+            if (test & (0x0000F000)) {
+                output.push(test >> 12);
+            }
+            if (test & (0x00000F00)) {
+                output.push(test >> 8);
+            }
+            if (test & (0x000000F0)) {
+                output.push(test >> 4);
+            }
+            if (test & (0x0000000F)) {
+                output.push(test);
+            }
+        }
+
+        return output;
+    }
+
+    encodePattern() {
 
         let state = cup.state();
-        //select the starting player
-        if (!state.sx || state.sx.length == 0) {
-            state.sx = this.selectNextPlayer(playerList[Math.floor(Math.random() * playerList.length)]);
-        }
-        else {
-            state.sx = this.selectNextPlayer(state.sx);
-        }
+        let pattern = state.pattern;
 
-        //set the starting player, and set type for other player
-        let players = cup.players();
-        for (var id in players)
-            players[id].type = 'O';
-        players[state.sx].type = 'X';
+        let bits = 0;
+        let output = [];
+        let i = round * 3;
 
-        cup.event('newround', true);
-        cup.setTimelimit(15);
-    }
+        if (pattern[i])
+            bits |= (pattern[i])
+        if (pattern[i + 1])
+            bits |= (pattern[i + 1] << 4)
+        if (pattern[i + 2])
+            bits |= (pattern[i + 2] << 8)
 
-    selectNextPlayer(userid) {
-        let action = cup.action();
-        let players = cup.playerList();
-        userid = userid || action.user.id;
-        //only 2 players so just filter the current player
-        let remaining = players.filter(x => x != userid);
-        cup.next({
-            id: remaining[0],
-            action: 'pick'
-        });
-        return remaining[0];
+        // output.push(bits);
+
+        return bits;
     }
 
 
-    // Check each strip that makes a win
-    //      0  |  1  |  2
-    //    -----------------
-    //      3  |  4  |  5
-    //    -----------------
-    //      6  |  7  |  8
-    checkWinner() {
-        if (this.check([0, 1, 2])) return true;
-        if (this.check([3, 4, 5])) return true;
-        if (this.check([6, 7, 8])) return true;
-        if (this.check([0, 3, 6])) return true;
-        if (this.check([1, 4, 7])) return true;
-        if (this.check([2, 5, 8])) return true;
-        if (this.check([0, 4, 8])) return true;
-        if (this.check([6, 4, 2])) return true;
-        if (this.checkNoneEmpty()) return true;
-        return false;
-    }
-
-    checkNoneEmpty() {
-        let cells = cup.state().cells;
-        let cellslist = [];
-        for (var key in cells) {
-            cellslist.push(cells[key]);
-        }
-        let filtered = cellslist.filter(v => v == '');
-
-        if (filtered.length == 0) {
-            this.setTie();
-        }
-        return filtered.length == 0;
-    }
-
-    // checks if a strip has matching types
-    check(strip) {
-        let cells = cup.state().cells;
-        let cellslist = [];
-        for (var key in cells) {
-            cellslist.push(cells[key]);
-        }
-
-
-        let first = cellslist[strip[0]];
-        if (first == '')
-            return false;
-        let filtered = strip.filter(id => cellslist[id] == first);
-        if (filtered.length == 3 && filtered.length == strip.length) {
-            this.setWinner(first, strip);
-            return true;
-        }
-        return false;
-    }
-
-    findPlayerWithType(type) {
-        let players = cup.players();
-        for (var id in players) {
-            let player = players[id];
-            if (player.type == type)
-                return id;
-        }
-        return null;
-    }
-
-
-    setTie() {
-        cup.gameover({ type: 'tie' })
-        cup.next({});
-        // cup.prev({})
-
-        // cup.killGame();
-    }
     // set the winner event and data
-    setWinner(type, strip) {
-        //find user who matches the win type
-        let userid = this.findPlayerWithType(type);
+    setWinner(userid) {
+
         let player = cup.players(userid);
         player.rank = 1;
-        player.score = player.score + 100;
+        player.score = maxCorrect;
         if (!player) {
             player.id = 'unknown player';
         }
 
         cup.gameover({
             type: 'winner',
-            pick: type,
-            strip: strip,
-            id: userid
+            correct: maxCorrect
         });
-        // cup.prev()
         cup.next({});
-        // cup.killGame();
     }
 }
 
