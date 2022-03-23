@@ -73,13 +73,33 @@ export function GameLoader(props) {
         // }
 
         if (message.state) {
+
+            let state = fs.get('state') || {};
+            let prevRound = state?.round;
+            let nextRound = message.state?.round;
+
             fs.set('state', message.state);
+            let pattern = fs.get('savedPattern') || [];
+
+            setTimeout(() => {
+                if (prevRound != nextRound) {
+                    pattern = pattern.concat(message.state.pattern);
+                    fs.set('savedPattern', pattern);
+                    fs.set('playPos', -1);
+                    fs.set('userPos', 0);
+                    fs.set('userPattern', []);
+                    fs.set('playAuto', true);
+                }
+            }, nextRound > 3 ? 1000 : 1)
+
         }
 
         if (message.events) {
             fs.set('events', message.events);
         }
     }
+
+
 
     const onMessage = (evt) => {
 

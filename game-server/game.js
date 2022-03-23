@@ -3,7 +3,7 @@ import cup from './acosg';
 let defaultGame = {
     state: {
         _history: [],
-        round: 0,
+        round: 3,
         pattern: [],
     },
     players: {},
@@ -11,7 +11,7 @@ let defaultGame = {
     events: {}
 }
 
-class Tictactoe {
+class MemorizeUp {
 
     onNewGame(action) {
         cup.setGame(defaultGame);
@@ -23,7 +23,9 @@ class Tictactoe {
         if (!next || !next.id)
             return;
 
-        this.playerLeave(next.id);
+        let players = cup.playerList();
+
+        this.playerLeave(players[0]);
     }
 
     onJoin(action) {
@@ -53,27 +55,37 @@ class Tictactoe {
 
         let maxCorrect = this.checkGameover(action)
 
-        if (maxCorrect > 0) {
+        if (maxCorrect > -1) {
             this.setWinner(action.user.id, maxCorrect);
             return;
         }
 
+        let player = cup.players(action.user.id);
+
+        player.score = maxCorrect;
+        let state = cup.state();
+        state.round = state.round + 1;
         this.newRound();
     }
 
 
     checkGameover(action) {
         let input = action?.payload;
-        if (!input || !Array.isArray(input))
-            return 1;
+        if (!input || !Array.isArray(input) || input.length == 0)
+            return 0;
 
-        let inputPattern = this.decodePattern(input);
-        for (var i = 0; i < inputPattern.length; i++) {
-            if (inputPattern[i] != state._history[i])
+        let state = cup.state();
+
+        if (input.length < state._history.length)
+            return input.length;
+        // let inputPattern = this.decodePattern(input);
+        for (var i = 0; i < input.length; i++) {
+            if (input[i] != state._history[i])
                 return i + 1;
         }
 
-        return 0;
+
+        return -1;
     }
 
     getRandomInt(min, max) {
@@ -86,85 +98,32 @@ class Tictactoe {
         let state = cup.state();
         state.pattern = [];
 
-        for (let i = 0; i < 3; i++) {
+        let count = state.round == 3 ? 3 : 1;
+
+        for (let i = 0; i < count; i++) {
             let nextPattern = this.getRandomInt(1, 5);
             state._history.push(nextPattern);
-            state.pattern.push(nextPattern1);
+            state.pattern.push(nextPattern);
         }
     }
 
     newRound() {
         let state = cup.state();
-        state.round = state.round + 1;
+
 
         this.addPatterns();
 
         cup.next({ 'id': '*' });
 
-        state.pattern = this.encodePattern();
+        // state.pattern = this.encodePattern();
         // cup.event('pattern', this.encodePattern());
 
-        let minTime = Math.max(state._history.length, 5) + Math.round(state._history.length * 0.8);
+        let minTime = Math.max(state._history.length, 5) + Math.round(state._history.length * 0.8) * 100;
         cup.setTimelimit(minTime);
     }
 
-    decodePattern(input) {
-        let output = [];
-        for (var i = 0; i < input.length; i++) {
-            let test = input[i];
-            if (test & (0xF0000000)) {
-                output.push(test >> 28);
-            }
-            if (test & (0x0F000000)) {
-                output.push(test >> 24);
-            }
-            if (test & (0x00F00000)) {
-                output.push(test >> 20);
-            }
-            if (test & (0x000F0000)) {
-                output.push(test >> 16);
-            }
-            if (test & (0x0000F000)) {
-                output.push(test >> 12);
-            }
-            if (test & (0x00000F00)) {
-                output.push(test >> 8);
-            }
-            if (test & (0x000000F0)) {
-                output.push(test >> 4);
-            }
-            if (test & (0x0000000F)) {
-                output.push(test);
-            }
-        }
-
-        return output;
-    }
-
-    encodePattern() {
-
-        let state = cup.state();
-        let pattern = state.pattern;
-
-        let bits = 0;
-        let output = [];
-        let i = round * 3;
-
-        if (pattern[i])
-            bits |= (pattern[i])
-        if (pattern[i + 1])
-            bits |= (pattern[i + 1] << 4)
-        if (pattern[i + 2])
-            bits |= (pattern[i + 2] << 8)
-
-        // output.push(bits);
-
-        return bits;
-    }
-
-
     // set the winner event and data
-    setWinner(userid) {
+    setWinner(userid, maxCorrect) {
 
         let player = cup.players(userid);
         player.rank = 1;
@@ -181,4 +140,4 @@ class Tictactoe {
     }
 }
 
-export default new Tictactoe();
+export default new MemorizeUp();

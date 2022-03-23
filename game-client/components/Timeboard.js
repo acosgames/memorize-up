@@ -1,6 +1,6 @@
 import fs from 'flatstore';
 
-function TimeBar(props) {
+function Timeboard(props) {
 
     const processProgress = () => {
         let timer = fs.get('timer') || {};
@@ -43,4 +43,4 @@ function TimeBar(props) {
 
 }
 
-export default fs.connect(['timeleft'])(TimeBar);
+export default fs.connect(['timeleft'])(Timeboard);
