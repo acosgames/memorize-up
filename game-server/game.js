@@ -60,9 +60,14 @@ class MemorizeUp {
             return;
         }
 
-        let player = cup.players(action.user.id);
+        // let player = cup.players(action.user.id);
 
-        player.score = maxCorrect;
+        // let input = action?.payload;
+        // if (!input || !Array.isArray(input) || input.length == 0)
+        //     player.score = 0;
+        // else
+        //     player.score = input.length;
+
         let state = cup.state();
         state.round = state.round + 1;
         this.newRound();
@@ -124,10 +129,10 @@ class MemorizeUp {
 
     // set the winner event and data
     setWinner(userid, maxCorrect) {
-
+        let state = cup.state();
         let player = cup.players(userid);
         player.rank = 1;
-        player.score = maxCorrect;
+        player.score = state.round;
         if (!player) {
             player.id = 'unknown player';
         }

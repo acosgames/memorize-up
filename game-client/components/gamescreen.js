@@ -4,8 +4,17 @@ import MelodyAuto from './MelodyAuto';
 import MelodyManual from './MelodyManual';
 
 import fs from 'flatstore';
+import { useState } from 'react';
+import WelcomeScreen from './WelcomeScreen';
 
 function Gamescreen(props) {
+
+    const [isReady, setIsReady] = useState(false);
+
+
+    if (!isReady) {
+        return (<WelcomeScreen setIsReady={setIsReady}></WelcomeScreen>)
+    }
 
     return (
         <>

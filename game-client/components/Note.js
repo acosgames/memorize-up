@@ -44,13 +44,23 @@ function Note(props) {
             props.onNoteDone(soundId);
 
         setActive(true);
-        setTimeout(() => {
 
-            if (playAuto)
+        if (playAuto) {
+            setTimeout(() => {
                 props.onNoteDone(soundId);
-            setActive(false);
+                setActive(false);
+            }, 350);
+        }
+        else {
+            setTimeout(() => {
 
-        }, 350);
+                setActive(false);
+
+            }, 200);
+        }
+
+
+
 
         sounds[soundId].currentTime = 0;
         sounds[soundId].play();
