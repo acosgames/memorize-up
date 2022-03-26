@@ -21,7 +21,7 @@ npm start
 
 ### Playing the game
 
-1. Open 2 tabs at [http://localhost:3200/](http://localhost:3200/)
+1. Open 1 tab at [http://localhost:3200/](http://localhost:3200/)
 2. Enter a username on each tab and click 'Join'
 3. When ready, press "Start Game"
 
