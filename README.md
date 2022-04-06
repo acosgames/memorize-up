@@ -1,9 +1,12 @@
 # Memorize Up
 Attempt to memorize the pattern for as long as you can go.
 
-[Play on ACOS.games](https://acos.games/g/memorize-up)
+[<img width="100" src="https://user-images.githubusercontent.com/96845776/161881777-c6000699-a9b0-4f9d-9bde-7ab22d05196b.png" />](https://acos.games/g/tictactoe)
 
-[View Acos Documentation](https://docs.acos.games)
+[Play Memorize Up on ACOS](https://acos.games/g/memorize-up)
+
+[ACOS Documentation](https://docs.acos.games)
+
 
 --- 
 
