@@ -120,7 +120,7 @@ class MemorizeUp {
 
         cup.next({ 'id': '*' });
 
-        // state.pattern = this.encodePattern();
+        // state.pattern = this.encodePattern();   
         // cup.event('pattern', this.encodePattern());
 
         let minTime = Math.max(state._history.length, 5) + Math.round(state._history.length * 0.8) * 100;
