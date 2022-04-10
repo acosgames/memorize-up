@@ -118,7 +118,7 @@ class MemorizeUp {
 
         this.addPatterns();
 
-        cup.next({ 'id': '*' });
+        cup.next('*');
 
         // state.pattern = this.encodePattern();   
         // cup.event('pattern', this.encodePattern());
@@ -131,17 +131,18 @@ class MemorizeUp {
     setWinner(userid, maxCorrect) {
         let state = cup.state();
         let player = cup.players(userid);
-        player.rank = 1;
-        player.score = state.round;
         if (!player) {
             player.id = 'unknown player';
         }
+        player.rank = 1;
+        player.score = state.round;
+
 
         cup.gameover({
             type: 'winner',
             correct: maxCorrect
         });
-        cup.next({});
+        // cup.next({});
     }
 }
 

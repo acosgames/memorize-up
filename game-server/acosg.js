@@ -2,15 +2,15 @@
 class ACOSG {
     constructor() {
         try {
-            this.actions = JSON.parse(JSON.stringify(globals.actions()));
+            this.actions = globals.actions();
         }
         catch (e) { this.error('Failed to load actions'); return }
         try {
-            this.originalGame = JSON.parse(JSON.stringify(globals.game()));
+            this.originalGame = globals.game();
         }
         catch (e) { this.error('Failed to load originalGame'); return }
         try {
-            this.nextGame = JSON.parse(JSON.stringify(globals.game()));
+            this.nextGame = globals.game();
         }
         catch (e) { this.error('Failed to load nextGame'); return }
 
@@ -171,10 +171,15 @@ class ACOSG {
     }
 
     next(obj) {
-        if (typeof obj === 'object') {
+        if (typeof obj === 'undefined' || obj == null) {
+            return this.nextGame.next;
+        }
+
+        if (typeof obj === 'object' && !Array.isArray(obj)) {
             this.nextGame.next = obj;
         }
-        return this.nextGame.next;
+
+        this.nextGame.next = { id: obj };
     }
 
     setTimelimit(seconds) {
