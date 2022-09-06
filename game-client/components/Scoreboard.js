@@ -11,7 +11,7 @@ function Scoreboard(props) {
 
     return (
         <div className="player-panel">
-            <div className="hstack" style={{ alignItems: "center", justifyContent: "center" }}>
+            <div className="hstack" style={{ alignItems: "center", justifyContent: "center", height: '100%' }}>
                 <div className="score">{props['state-round'] || 0}</div>
                 <Timeboard />
             </div>

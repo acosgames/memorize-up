@@ -23,6 +23,7 @@ class ACOSG {
         // this.nextTimeLimit = -1;
         this.kickedPlayers = [];
 
+        this.randomFunc = null;
         // if (!this.nextGame || !this.nextGame.rules || Object.keys(this.nextGame.rules).length == 0) {
         //     this.isNewGame = true;
         //     this.error('Missing Rules');
@@ -54,9 +55,6 @@ class ACOSG {
 
             this.nextGame.events = {};
         }
-
-
-
     }
 
     on(type, cb) {
@@ -95,7 +93,15 @@ class ACOSG {
             let player = this.nextGame.players[id];
             game.players[id] = player;
         }
-        this.nextGame = game;
+        if (!this.nextGame)
+            this.nextGame = {};
+
+        for (const key in game) {
+            if (key == 'room')
+                continue;
+            this.nextGame[key] = game[key];
+        }
+        // this.nextGame = game;
     }
 
     submit() {
@@ -109,11 +115,14 @@ class ACOSG {
         this.event('gameover', payload);
     }
 
-    log(msg) {
-        globals.log(msg);
+    log() {
+        // globals.log.apply(globals, arguments);
+        globals.log(arguments)
+        // globals.log(msg);
     }
-    error(msg) {
-        globals.error(msg);
+    error() {
+        // globals.error.apply(globals, arguments);
+        globals.error(arguments);
     }
 
     kickPlayer(id) {
@@ -205,6 +214,12 @@ class ACOSG {
     clearEvents() {
         this.nextGame.events = {};
     }
+
+    //discrete random using room data, initialized before server script is run
+    random() {
+        return globals.random();
+    }
+
     // events(name) {
     //     if (typeof name === 'undefined')
     //         return this.nextGame.events;

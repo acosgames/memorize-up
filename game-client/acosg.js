@@ -10,8 +10,10 @@ fs.set('prev', {});
 fs.set('next', {});
 fs.set('events', {});
 
-var needsReset = false;
-var timerHandle = 0;
+let needsReset = false;
+let timerHandle = 0;
+let memorizeTimerHandle = 0;
+
 export function GameLoader(props) {
 
 
@@ -41,12 +43,13 @@ export function GameLoader(props) {
 
         fs.set('timeleft', elapsed);
 
-        let events = fs.get('events');
-        if (events?.gameover) {
-            clearTimeout(timerHandle);
-            return;
-        }
+        // let events = fs.get('events');
+        // if (events?.gameover) {
+        //     clearTimeout(timerHandle);
+        //     return;
+        // }
     }
+
 
     const flatstoreUpdate = (message) => {
         if (!message)
@@ -68,9 +71,19 @@ export function GameLoader(props) {
         if (message.next) {
             fs.set('next', message.next);
         }
+        if (message.events) {
+            fs.set('events', message.events);
+        }
         // if (message.prev) {
         //     fs.set('prev', message.prev);
         // }
+
+        if (message?.room?.status) {
+            fs.set('gamestatus', message.room.status);
+        }
+        if (message?.room?.sequence) {
+            fs.set('gamesequence', message.room.sequence)
+        }
 
         if (message.state) {
 
@@ -79,18 +92,20 @@ export function GameLoader(props) {
             let nextRound = message.state?.round;
 
             fs.set('state', message.state);
-            let pattern = fs.get('savedPattern') || [];
-
-            setTimeout(() => {
-                if (prevRound != nextRound) {
-                    pattern = pattern.concat(message.state.pattern);
-                    fs.set('savedPattern', pattern);
-                    fs.set('playPos', -1);
-                    fs.set('userPos', 0);
-                    fs.set('userPattern', []);
-                    fs.set('playAuto', true);
-                }
-            }, nextRound > 3 ? 1000 : 1)
+            //let pattern = message?.state?.history || [];//fs.get('savedPattern') || [];
+            if (memorizeTimerHandle) {
+                clearTimeout(memorizeTimerHandle);
+            }
+            memorizeTimerHandle = setTimeout(() => {
+                //if (prevRound != nextRound) {
+                // pattern = pattern.concat(message.state.pattern);
+                fs.set('savedPattern', message?.state?.history);
+                fs.set('playPos', -1);
+                fs.set('userPos', 0);
+                fs.set('userPattern', []);
+                fs.set('playAuto', true);
+                //}
+            }, 1000)
 
         }
 
@@ -112,18 +127,18 @@ export function GameLoader(props) {
 
         console.log('New Game State:', message);
 
-        if (needsReset) {
-            flatstoreUpdate({
-                local: {},
-                state: {},
-                players: {},
-                events: {},
-                next: {},
-                timer: {},
-                rules: {},
-            })
-            needsReset = false;
-        }
+        // if (needsReset) {
+        //     flatstoreUpdate({
+        //         local: {},
+        //         state: {},
+        //         players: {},
+        //         events: {},
+        //         next: {},
+        //         timer: {},
+        //         rules: {},
+        //     })
+        //     needsReset = false;
+        // }
 
         flatstoreUpdate(message);
 

@@ -57,14 +57,14 @@ body,
 }
 
 .player-panel {
-  height: 6rem;
-  font-size: 3rem;
-  line-height: 6rem;
+  padding-top:4rem;
+  height: 18rem;
+  line-height: 15rem;
   text-align: center;
 }
 
 .gamearea-wrapper {
-  height: 70%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -78,6 +78,10 @@ body,
   grid-gap: 20px;
 }
 
+.score {
+  font-size: 12rem;
+  height:100%
+}
 .cell {
   display: inline-block;
   opacity: 0.3;
@@ -86,10 +90,10 @@ body,
   box-sizing: border-box;
   border-bottom: 1px solid #fff;
   z-index: 4;
-  height: 20vw;
-  width: 20vw;
-  max-height: 300px;
-  max-width: 300px;
+  height: 35vw;
+  width: 35vh;
+  /* max-height: 300px; */
+  /* max-width: 300px; */
 }
 
 /* .cell > div {

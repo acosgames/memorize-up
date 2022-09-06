@@ -2,9 +2,9 @@ import cup from './acosg';
 
 let defaultGame = {
     state: {
-        _history: [],
+        history: [],
         round: 3,
-        pattern: [],
+        //pattern: [],
     },
     players: {},
     next: {},
@@ -32,6 +32,8 @@ class MemorizeUp {
         cup.log(action);
         if (!action.user.id)
             return;
+
+        // action.test.hello = 1;
 
         let player = cup.players(action.user.id);
         player.score = 0;
@@ -81,11 +83,11 @@ class MemorizeUp {
 
         let state = cup.state();
 
-        if (input.length < state._history.length)
+        if (input.length < state.history.length)
             return input.length;
         // let inputPattern = this.decodePattern(input);
         for (var i = 0; i < input.length; i++) {
-            if (input[i] != state._history[i])
+            if (input[i] != state.history[i])
                 return i + 1;
         }
 
@@ -96,19 +98,20 @@ class MemorizeUp {
     getRandomInt(min, max) {
         min = Math.ceil(min);
         max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+        let r = cup.random();
+        return Math.floor(r * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
     }
 
     addPatterns() {
         let state = cup.state();
-        state.pattern = [];
+        //state.pattern = [];
 
         let count = state.round == 3 ? 3 : 1;
 
         for (let i = 0; i < count; i++) {
             let nextPattern = this.getRandomInt(1, 5);
-            state._history.push(nextPattern);
-            state.pattern.push(nextPattern);
+            state.history.push(nextPattern);
+            // state.pattern.push(nextPattern);
         }
     }
 
@@ -123,7 +126,7 @@ class MemorizeUp {
         // state.pattern = this.encodePattern();   
         // cup.event('pattern', this.encodePattern());
 
-        let minTime = Math.max(state._history.length, 5) + Math.round(state._history.length * 0.8) * 100;
+        let minTime = Math.max(state.history.length, 5) + Math.round(state.history.length * 0.8) * 100;
         cup.setTimelimit(minTime);
     }
 
@@ -132,6 +135,7 @@ class MemorizeUp {
         let state = cup.state();
         let player = cup.players(userid);
         if (!player) {
+            player = {};
             player.id = 'unknown player';
         }
         player.rank = 1;

@@ -33,8 +33,8 @@ function Note(props) {
     const playSound = (soundId) => {
 
         let isGameover = fs.get('isGameover');
-        if (isGameover)
-            return;
+        // if (isGameover)
+        //     return;
         let playAuto = fs.get('playAuto');
         // if (playAuto)
         //     return;
@@ -87,7 +87,8 @@ function Note(props) {
         let savedPattern = fs.get('savedPattern');
         let userPattern = fs.get('userPattern') || [];
 
-        let isGameStart = state.gamestatus == 'gamestart';
+        let gamestatus = fs.get('gamestatus');
+        let isGameStart = gamestatus == 'gamestart';
         if (isGameStart) {
             if (savedPattern[userPos] != id) {
                 // let encoded = encodePattern(userPattern);
@@ -111,11 +112,7 @@ function Note(props) {
     }
 
     useEffect(() => {
-        if (props['events-gameover']) {
-            //playSound(0);
-            fs.set('isGameover', true);
-        }
-        else if (props.playNote == id && !active) {
+        if (props.playNote == id && !active) {
             playSound(id);
         }
 

@@ -50,7 +50,9 @@ function MelodyManual(props) {
 
         if (pos >= savedPattern.length) {
             let state = fs.get('state');
-            if (state.gamestatus == 'gamestart') {
+            let gamestatus = fs.get('gamestatus');
+
+            if (gamestatus == 'gamestart') {
                 // let encoded = encodePattern(userPattern);
                 let userPattern = fs.get('userPattern');
                 send('pick', userPattern);

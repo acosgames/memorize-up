@@ -22,7 +22,11 @@ function MelodyAuto(props) {
         }
 
         let savedPattern = fs.get('savedPattern');
-
+        if (!savedPattern) {
+            fs.set('playNote', null);
+            fs.set('playAuto', false);
+            return;
+        }
         // let patternId = Math.floor(pos / 3);
 
 

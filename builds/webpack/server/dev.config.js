@@ -10,7 +10,7 @@ module.exports = {
     entry: ENTRY_FILE,
     output: {
         path: OUTPUT_PATH,
-        filename: 'server.bundle.js',
+        filename: 'server.bundle.dev.js',
         devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]'
     },
     devtool: "source-map",
