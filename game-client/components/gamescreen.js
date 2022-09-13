@@ -12,9 +12,9 @@ function Gamescreen(props) {
     const [isReady, setIsReady] = useState(false);
 
 
-    if (!isReady) {
-        return (<WelcomeScreen setIsReady={setIsReady}></WelcomeScreen>)
-    }
+    // if (!isReady) {
+    //     return (<WelcomeScreen setIsReady={setIsReady}></WelcomeScreen>)
+    // }
 
     return (
         <>

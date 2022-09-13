@@ -55,16 +55,16 @@ class ACOSG {
             }
 
             //if (!('prev' in this.nextGame)) {
-            this.nextGame.prev = {};
+            // this.nextGame.prev = {};
             //}
 
             if (!('next' in this.nextGame)) {
                 this.nextGame.next = {};
             }
 
-            if (!('rules' in this.nextGame)) {
-                this.nextGame.rules = {};
-            }
+            // if (!('rules' in this.nextGame)) {
+            //     this.nextGame.rules = {};
+            // }
 
             this.nextGame.events = {};
         }
