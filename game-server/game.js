@@ -36,7 +36,8 @@ class MemorizeUp {
         // action.test.hello = 1;
 
         let player = cup.players(action.user.id);
-        player.score = 0;
+        player.rank = 1;
+        player.score = 3;
     }
 
     checkNewRound() {

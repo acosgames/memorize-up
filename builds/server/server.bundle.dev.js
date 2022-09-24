@@ -292,7 +292,8 @@ class MemorizeUp {
         // action.test.hello = 1;
 
         let player = _acosg__WEBPACK_IMPORTED_MODULE_0__.default.players(action.user.id);
-        player.score = 0;
+        player.rank = 1;
+        player.score = 3;
     }
 
     checkNewRound() {
