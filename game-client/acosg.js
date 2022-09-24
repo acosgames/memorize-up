@@ -41,7 +41,9 @@ export function GameLoader(props) {
             elapsed = 0;
         }
 
-        fs.set('timeleft', elapsed);
+        let room = fs.get('room');
+        if (room.status != 'gameover')
+            fs.set('timeleft', elapsed);
 
         // let events = fs.get('events');
         // if (events?.gameover) {
@@ -73,6 +75,10 @@ export function GameLoader(props) {
         }
         if (message.events) {
             fs.set('events', message.events);
+        }
+
+        if (message.room) {
+            fs.set('room', message.room);
         }
         // if (message.prev) {
         //     fs.set('prev', message.prev);

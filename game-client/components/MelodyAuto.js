@@ -70,10 +70,10 @@ function MelodyAuto(props) {
 
     return (
         <div className="gamearea">
-            <Note id={1} onNoteDone={onNoteDone} />
-            <Note id={2} onNoteDone={onNoteDone} />
-            <Note id={3} onNoteDone={onNoteDone} />
-            <Note id={4} onNoteDone={onNoteDone} />
+            <Note key={'note-1'} id={1} onNoteDone={onNoteDone} />
+            <Note key={'note-2'} id={2} onNoteDone={onNoteDone} />
+            <Note key={'note-3'} id={3} onNoteDone={onNoteDone} />
+            <Note key={'note-4'} id={4} onNoteDone={onNoteDone} />
         </div>
     )
 }

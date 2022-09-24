@@ -3,5 +3,9 @@
     "maxplayers": 1,
     "minteams": 0,
     "maxteams": 0,
-    "teams": []
+    "teams": [],
+    "screentype": 3,
+    "screenwidth": 1400,
+    "resow": 4,
+    "resoh": 3
 }

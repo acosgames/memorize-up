@@ -28,7 +28,8 @@ function Note(props) {
 
     const id = props.id;
     const activeClass = (props.playNote == id || active) ? 'active' : '';
-    var isPlaying = false;
+    var isMounted = true;
+    let timeHandle = 0;
 
     const playSound = (soundId) => {
 
@@ -44,15 +45,16 @@ function Note(props) {
             props.onNoteDone(soundId);
 
         setActive(true);
+        // isPlaying = true;
 
         if (playAuto) {
-            setTimeout(() => {
+            timeHandle = setTimeout(() => {
                 props.onNoteDone(soundId);
                 setActive(false);
             }, 350);
         }
         else {
-            setTimeout(() => {
+            timeHandle = setTimeout(() => {
 
                 setActive(false);
 
@@ -63,7 +65,13 @@ function Note(props) {
 
 
         sounds[soundId].currentTime = 0;
-        sounds[soundId].play();
+        try {
+            PlayAudio(soundId);
+        }
+        catch (e) {
+
+        }
+
 
 
         // sounds[soundId].onended = (ev) => {
@@ -73,6 +81,15 @@ function Note(props) {
 
         // }
     };
+
+    const PlayAudio = async (soundId) => {
+        try {
+            await sounds[soundId].play();
+        }
+        catch (e) {
+
+        }
+    }
 
 
     const clicked = () => {
@@ -117,6 +134,11 @@ function Note(props) {
         }
 
     })
+
+    useEffect(() => {
+
+        return () => { clearTimeout(timeHandle) }
+    }, [])
 
 
     return (
