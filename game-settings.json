@@ -5,7 +5,7 @@
     "maxteams": 0,
     "teams": [],
     "screentype": 3,
-    "screenwidth": 1400,
-    "resow": 4,
-    "resoh": 3
+    "screenwidth": 2000,
+    "resow": 16,
+    "resoh": 9
 }

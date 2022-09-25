@@ -2,6 +2,7 @@ import cup from './acosg';
 
 let defaultGame = {
     state: {
+        _ninja: 'HAHAHAH',
         history: [],
         round: 3,
         //pattern: [],
@@ -38,6 +39,7 @@ class MemorizeUp {
         let player = cup.players(action.user.id);
         player.rank = 1;
         player.score = 3;
+        player._clown = 'YES ITS ME!';
     }
 
     checkNewRound() {
@@ -128,7 +130,7 @@ class MemorizeUp {
         // cup.event('pattern', this.encodePattern());
 
         let minTime = Math.max(state.history.length, 5) + Math.round(state.history.length * 0.8) * 100;
-        cup.setTimelimit(minTime);
+        cup.setTimelimit(10);//minTime);
     }
 
     // set the winner event and data
