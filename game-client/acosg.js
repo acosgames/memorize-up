@@ -14,9 +14,6 @@ let needsReset = false;
 let timerHandle = 0;
 let memorizeTimerHandle = 0;
 
-
-
-
 export function GameLoader(props) {
 
 
@@ -43,8 +40,6 @@ export function GameLoader(props) {
         if (elapsed <= 0) {
             elapsed = 0;
         }
-
-        window.top.location.reload();
 
         let room = fs.get('room');
         if (room.status != 'gameover')
