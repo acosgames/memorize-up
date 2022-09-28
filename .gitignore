@@ -12,7 +12,7 @@ pids
 *.pid.lock
 
 builds/client/
-build/server/
+builds/server/
 
 client.bundle.js
 client.bundle.dev.js
