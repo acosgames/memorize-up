@@ -14,11 +14,11 @@ function Gamescreen(props) {
 
     // if (!isReady) {
     //     return (<WelcomeScreen setIsReady={setIsReady}></WelcomeScreen>)
-    // }
+    // } 
 
     return (
         <>
-            <div className="gamescreen">
+            <div className="gamescreen" >
                 <Scoreboard />
                 <div className="gamearea-wrapper">
                     <Melody />
