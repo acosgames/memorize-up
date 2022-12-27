@@ -2,17 +2,8 @@
     "minplayers": 1,
     "maxplayers": 1,
     "minteams": 0,
-    "maxteams": 1,
-    "teams": [
-        {
-            "team_name": "Team 1",
-            "team_slug": "team_1",
-            "minplayers": 1,
-            "maxplayers": 2,
-            "team_order": 0,
-            "color": "#ff0808"
-        }
-    ],
+    "maxteams": 0,
+    "teams": [],
     "screentype": 3,
     "screenwidth": 1400,
     "resow": 4,

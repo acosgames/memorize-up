@@ -4,8 +4,12 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 
 
-var ENTRY_FILE = './game-client/index.js';
-var OUTPUT_PATH = '../../../builds/client';
+// var ENTRY_FILE = './game-client/index.js';
+// var OUTPUT_PATH = '../../../builds/client';
+
+var ENTRY_FILE = path.resolve(__dirname, '../../../game-client/index.js');
+var OUTPUT_PATH = path.resolve(__dirname, '../../../builds/client');
+
 
 module.exports = {
     mode: 'production',

@@ -4,6 +4,7 @@ const path = require('path');
 var ENTRY_FILE = './game-client/index.js';
 var OUTPUT_PATH = '../../../builds/client';
 
+
 module.exports = {
     mode: 'development',
     devtool: 'inline-source-map',

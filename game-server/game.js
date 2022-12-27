@@ -38,7 +38,7 @@ class MemorizeUp {
 
         let player = cup.players(action.user.id);
         player.rank = 1;
-        player.score = 3;
+        player.score = 0;
         player._clown = 'YES ITS ME!';
     }
 
@@ -65,15 +65,16 @@ class MemorizeUp {
             return;
         }
 
-        // let player = cup.players(action.user.id);
+        let player = cup.players(action.user.id);
 
         // let input = action?.payload;
         // if (!input || !Array.isArray(input) || input.length == 0)
         //     player.score = 0;
         // else
-        //     player.score = input.length;
+
 
         let state = cup.state();
+        player.score = state.round;
         state.round = state.round + 1;
         this.newRound();
     }
