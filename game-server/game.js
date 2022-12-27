@@ -130,8 +130,8 @@ class MemorizeUp {
         // state.pattern = this.encodePattern();   
         // cup.event('pattern', this.encodePattern());
 
-        let minTime = Math.max(state.history.length, 5) + Math.round(state.history.length * 0.8) * 100;
-        cup.setTimelimit(10);//minTime);
+        let minTime = Math.max(state.history.length * 1.5, 15);//+ Math.round(state.history.length * 0.8) * 100;
+        cup.setTimelimit(minTime);
     }
 
     // set the winner event and data
