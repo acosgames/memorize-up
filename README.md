@@ -36,6 +36,15 @@ npm start
 
 The game was designed to play in Scaled Resolution mode, 3:4 resolution, 600 width.
 
+## VSCode Debugging, add to launch.json
+```json
+{
+    "command": "npm start",
+    "name": "Launch Tic Tac Toe",
+    "request": "launch",
+    "type": "node-terminal"
+},
+```
 
 ## About Client
 
