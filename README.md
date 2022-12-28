@@ -40,7 +40,7 @@ The game was designed to play in Scaled Resolution mode, 3:4 resolution, 600 wid
 ```json
 {
     "command": "npm start",
-    "name": "Launch Tic Tac Toe",
+    "name": "Launch Memorize Up",
     "request": "launch",
     "type": "node-terminal"
 },
