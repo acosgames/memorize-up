@@ -3,9 +3,6 @@ const path = require('path');
 var ENTRY_FILE = path.resolve(__dirname, '../../../game-server/index.js');
 var OUTPUT_PATH = path.resolve(__dirname, '../../../builds/server');
 
-
-console.log("webpack entry: " + ENTRY_FILE);
-console.log("webpack output: " + ENTRY_FILE);
 module.exports = {
     entry: ENTRY_FILE,
     output: {
@@ -18,7 +15,4 @@ module.exports = {
     optimization: {
         usedExports: true,
     },
-    // devServer: {
-    //     writeToDisk: true
-    // }
 };
