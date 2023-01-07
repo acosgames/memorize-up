@@ -7,6 +7,7 @@ fs.set('playPos', -1);
 
 function MelodyAuto(props) {
 
+    let [playAuto] = fs.useWatch('playAuto');
 
     const onNoteDone = (prevId) => {
         let pos = fs.get('playPos');
@@ -78,4 +79,4 @@ function MelodyAuto(props) {
     )
 }
 
-export default fs.connect(['playAuto'])(MelodyAuto);
+export default MelodyAuto;

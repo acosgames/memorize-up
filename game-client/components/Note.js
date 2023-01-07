@@ -26,26 +26,21 @@ function Note(props) {
 
     const [active, setActive] = useState(false);
 
+    let [playNote] = fs.useWatch('playNote');
+    let [eventsGameover] = fs.useWatch('events-gameover');
+
+
     const id = props.id;
-    const activeClass = (props.playNote == id || active) ? 'active' : '';
-    var isMounted = true;
+    const activeClass = (playNote == id || active) ? 'active' : '';
     let timeHandle = 0;
 
     const playSound = (soundId) => {
-
-        let isGameover = fs.get('isGameover');
-        // if (isGameover)
-        //     return;
         let playAuto = fs.get('playAuto');
-        // if (playAuto)
-        //     return;
 
-        // isPlaying = true;
         if (!playAuto)
             props.onNoteDone(soundId);
 
         setActive(true);
-        // isPlaying = true;
 
         if (playAuto) {
             timeHandle = setTimeout(() => {
@@ -55,31 +50,16 @@ function Note(props) {
         }
         else {
             timeHandle = setTimeout(() => {
-
                 setActive(false);
-
             }, 200);
         }
-
-
-
 
         sounds[soundId].currentTime = 0;
         try {
             PlayAudio(soundId);
         }
         catch (e) {
-
         }
-
-
-
-        // sounds[soundId].onended = (ev) => {
-        //     if (props.playNote == soundId) {
-
-        //     }
-
-        // }
     };
 
     const PlayAudio = async (soundId) => {
@@ -87,10 +67,8 @@ function Note(props) {
             await sounds[soundId].play();
         }
         catch (e) {
-
         }
     }
-
 
     const clicked = () => {
         console.log('clicked cellid: ', id);
@@ -115,7 +93,6 @@ function Note(props) {
                 return;
             }
 
-
             userPos += 1;
             userPattern.push(id);
             fs.set('userPos', userPos);
@@ -123,23 +100,18 @@ function Note(props) {
         }
 
         playSound(id);
-
-
-
     }
 
+
     useEffect(() => {
-        if (props.playNote == id && !active) {
+        if (playNote == id && !active) {
             playSound(id);
         }
-
     })
 
     useEffect(() => {
-
         return () => { clearTimeout(timeHandle) }
     }, [])
-
 
     return (
         <div
@@ -150,8 +122,6 @@ function Note(props) {
             <div></div>
         </div>
     )
-
 }
 
-
-export default fs.connect(['playNote', 'events-gameover'])(Note);
+export default Note;

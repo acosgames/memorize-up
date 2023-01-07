@@ -79,4 +79,4 @@ function MelodyManual(props) {
     )
 }
 
-export default fs.connect([])(MelodyManual);
+export default MelodyManual;
