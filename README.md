@@ -5,7 +5,7 @@ Attempt to memorize the pattern for as long as you can go.  This game is single 
 
 [Play Memorize Up on ACOS](https://acos.games/g/memorize-up)
 
-[ACOS Documentation](https://docs.acos.games)
+[ACOS Documentation](https://sdk.acos.games)
 
 
 --- 
