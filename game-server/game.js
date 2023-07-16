@@ -5,7 +5,7 @@ let defaultGame = {
         _ninja: 'HAHAHAH',
         history: [],
         round: 3,
-        //pattern: [],
+        //pattern: [],  
     },
     players: {},
     next: {},

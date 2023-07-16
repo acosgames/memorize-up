@@ -1,6 +1,6 @@
+
 import cup from './acosg';
 import tictactoe from './game';
-
 
 cup.on('gamestart', (action) => tictactoe.onNewGame(action));
 cup.on('skip', (action) => tictactoe.onSkip(action));

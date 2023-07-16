@@ -1,7 +1,8 @@
 const path = require('path');
+const webpack = require('webpack');
 
 var ENTRY_FILE = path.resolve(__dirname, '../../../game-server/index.js');
-var OUTPUT_PATH = path.resolve(__dirname, '../../../builds/server');
+var OUTPUT_PATH = path.resolve(__dirname, '../../../builds/server').replace(/\\/ig, '/');
 
 module.exports = {
     entry: ENTRY_FILE,

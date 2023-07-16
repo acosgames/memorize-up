@@ -5,12 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "command": "cd memorize-up && npm start",
+            "name": "Launch Memorize-Up",
+            "request": "launch",
+            "type": "node-terminal",
+        },
+
+        {
             "type": "node",
             "request": "attach",
             "name": "Debug Pick Process",
             "processId": "${command:PickProcess}",
-            "restart": true,
-            "protocol": "inspector"
-        }
+            "restart": true
+        },
     ]
 }
