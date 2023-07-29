@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "command": "cd memorize-up && npm start",
+            "command": "npm start",
             "name": "Launch Memorize-Up",
             "request": "launch",
             "type": "node-terminal",
