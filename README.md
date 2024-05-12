@@ -10,7 +10,7 @@ Attempt to memorize the pattern for as long as you can go.  This game is single 
 
 --- 
 
-## Getting Started
+## Getting Started 
 
 Requires Node v16+
 
